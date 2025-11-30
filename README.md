@@ -27,6 +27,7 @@ pip install -r requirements.txt
 ### Run
 
 ```bash
+cd personal_assistant
 uv run app.py
 ```
 
