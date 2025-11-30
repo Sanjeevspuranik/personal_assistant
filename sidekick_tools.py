@@ -9,6 +9,7 @@ from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 from langchain_experimental.tools import PythonREPLTool
+import uuid
 
 load_dotenv(override=True)
 pushover_token = os.getenv("PUSHOVER_TOKEN")
@@ -92,6 +93,6 @@ async def other_tools():
         description="Useful for when you need to look up information about people, places, or things. Input should be a search query."
     )
 
-    python_repl_tool = PythonREPLTool
+    python_repl_tool = PythonREPLTool()
 
     return file_tools + [push_tool, tool_search, wiki_tool, python_repl_tool]
