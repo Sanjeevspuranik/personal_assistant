@@ -1,40 +1,81 @@
-# Personal Assistant
+# 🚀 Personal Assistant  
+An AI-powered, tool-using personal assistant built to automate daily tasks, perform intelligent searches, generate files, evaluate its own work, and boost productivity — powered by **LangGraph**, **LangChain**, **OpenAI GPT-4o mini**, and **Playwright**.
 
-A helpful project for automating daily tasks and improving productivity.
+---
 
-## Features
+## 🌟 Features
 
-1. Web searching
-2. Email sending
-3. File system access
-4. Wikipedia integration
-5. Python REPL execution
+### 🔧 Core Functionality
+- 🌐 Web Searching (via browser automation)
+- 📧 Email Sending
+- 📁 File System Access (read/write/modify)
+- 📖 Wikipedia Integration
+- 🧮 Python REPL Execution
 
-## Getting Started
+### 🤖 Intelligent Workflow
+- Multi-step **worker → tools → evaluator** cycle  
+- Self-evaluation of responses  
+- Success-criteria driven task completion  
+- Built-in memory using **MemorySaver**
 
-### Prerequisites
+### 🖥️ Automation Tools
+- Playwright browser control  
+- File creation / markdown generation  
+- Push notifications  
+- Structured outputs & validation  
 
-- Python 3.12+
-- Required dependencies (see `requirements.txt`)
+## Prerequisites
 
-### Installation
+- Python 3.12 or higher  
+- `pip` for installing dependencies  
+
+## Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Sanjeevspuranik/personal_assistant.git
 cd personal_assistant
 pip install -r requirements.txt
 ```
-### Run
-
+## Running the application
 ```bash
-cd personal_assistant
 uv run app.py
 ```
 
+## structure
+```bash
+personal_assistant/
+│
+├── app.py                 # main entry point
+├── sidekick.py            # core logic / assistant module
+├── sidekick_tools.py      # auxiliary tools / helper functions
+├── requirements.txt       # Python dependencies
+└── .gitignore             # gitignore file
+```
+
+## Usage
+
+After running app.py, the assistant will start and allow you to use features such as web search, Wikipedia lookup, file operations, and sending emails.
+
 ## Contributing
 
-Contributions are welcome. Please open an issue or submit a pull request.
+Contributions are welcome!
 
-## License
+- Open issues for bugs or feature requests.
 
-Apache-2.0 license
+- ull requests should follow the existing code style.
+
+## 📸 Demo Screenshots
+
+### **Execution Summary View**
+
+![Push notification](sample_run\push_notification.jpg)
+
+### **Generated Markdown Output Example**
+
+![Results](sample_run/day_out_bengaluru.md)
+
+---
+
+## 🎥 Sample Run (Video)
+
+![Live run](sample_run\Live_run.mp4)
