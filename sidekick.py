@@ -12,6 +12,9 @@ from sidekick_tools import playwright_tools, other_tools
 import uuid
 import asyncio
 from datetime import datetime
+import builtins
+builtins.uuid = uuid
+
 load_dotenv(override=True)
 
 
@@ -34,7 +37,7 @@ class EvaluatorOutput(BaseModel):
 class Sidekick:
     def __init__(self) -> None:
         self.worker_llm_with_tools = None
-        self.evaloator_ll_with_output = None
+        self.evaluator_llm_with_output = None
         self.tools = None
         self.graph = None
         self.ll_with_tools = None
@@ -49,7 +52,7 @@ class Sidekick:
         worker_llm = ChatOpenAI(model="gpt-4o-mini")
         self.worker_llm_with_tools = worker_llm.bind_tools(self.tools)
         evaluator_llm = ChatOpenAI(model="gpt-4o-mini")
-        self.evaloator_ll_with_output = evaluator_llm.with_structured_output(
+        self.evaluator_llm_with_output = evaluator_llm.with_structured_output(
             EvaluatorOutput)
         await self.build_graph()  # type: ignore
 
@@ -96,15 +99,15 @@ class Sidekick:
         system_messages = f"""
         You are an evaluator that determines if a task has been completed successfully by an assistant.
         Assess the assistant's last response based on the given criteria. 
-        Respond with your feedback, and with your decision on whether the success criteria has been met and whether more input input is nedded from the user.
+        Respond with your feedback, and with your decision on whether the success criteria has been met and whether more input input is needed from the user.
         """
 
         user_message = f"""
-        You are evaluating a conversation betwwen the User and Assistant. You decide what action to take based on the last response from the assistant, 
+        You are evaluating a conversation between the User and Assistant. You decide what action to take based on the last response from the assistant, 
         the success criteria, and the full conversation history.
         
-        The entire convesation history is as follows:
-        {self.format_convesation(state['messages'])}
+        The entire conversation history is as follows:
+        {self.format_conversation(state['messages'])}
         
         the success criteria for this assignment is:
         {state['success_criteria']}
@@ -133,7 +136,7 @@ class Sidekick:
             evaluator_messages)
 
         new_state = {
-            "messages": {"role": "assistant", "content": f"Evauator feedback on this answer: {eval_result.feedback}"},
+            "messages": {"role": "assistant", "content": f"Evaluator feedback on this answer: {eval_result.feedback}"},
             "success_criteria": state["success_criteria"],
             "feedback_on_work": eval_result.feedback,
             "success_criteria_met": eval_result.success_criteria_met,
@@ -143,13 +146,20 @@ class Sidekick:
         return new_state
 
     def worker_router(self, state: State) -> str:
-        last_message = state['messages'][-1]
-        if isinstance(last_message, HumanMessage):
-            return "worker"
-        else:
-            return "evaluator"
+        last = state["messages"][-1]
 
-    def format_convesation(self, messages: List[Any]) -> str:
+        # If assistant triggered a tool call → go to tools
+        if isinstance(last, AIMessage) and getattr(last, "tool_calls", None):
+            return "tools"
+
+        # If human spoke → worker
+        if isinstance(last, HumanMessage):
+            return "worker"
+
+        # Otherwise → evaluator
+        return "evaluator"
+
+    def format_conversation(self, messages: List[Any]) -> str:
         conversation = "Conversation history:\n\n"
         for message in messages:
             if isinstance(message, HumanMessage):
@@ -161,7 +171,7 @@ class Sidekick:
 
     def route_based_on_evaluation(self, state: State) -> str:
         if state["success_criteria_met"] or state["user_input_needed"]:
-            return END
+            return "END"
         else:
             return "worker"
 
@@ -191,7 +201,7 @@ class Sidekick:
 
         state = {
             "messages": message,
-            "success_criteria": success_criteria or "The answer shoud be clear and accurate",
+            "success_criteria": success_criteria or "The answer should be clear and accurate",
             "feedback_on_work": None,
             "success_criteria_met": False,
             "user_input_needed": False

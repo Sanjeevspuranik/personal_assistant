@@ -28,7 +28,7 @@ def free_resources(sidekick):
         print(f"[CLEAN UP ERROR]: {e}")
 
 
-with gr.Blocks(theme=gr.themes.Default(primary_hue="emerald")) as ui:
+with gr.Blocks(title="Sidekick", theme=gr.themes.Default(primary_hue="emerald")) as ui:
     gr.Markdown('## Sidekick Personal Co-worker')
     sidekick = gr.State(delete_callback=free_resources)
 
@@ -37,13 +37,14 @@ with gr.Blocks(theme=gr.themes.Default(primary_hue="emerald")) as ui:
     with gr.Group():
         with gr.Row():
             message = gr.Textbox(
-                show_label=False, placeholder="Your request to you sidekick")
+                show_label=False, placeholder="Your request to your sidekick")
         with gr.Row():
             success_criteria = gr.Textbox(
-                show_label=False, placeholder="Your request to you sidekick")
+                show_label=False, placeholder="Your request to your sidekick")
     with gr.Row():
-        reset_buttn = gr.Button("Reset", variant="stop")
+        reset_button = gr.Button("Reset", variant="stop")
         go_button = gr.Button("Go!", variant="primary")
+
     ui.load(setup, [], [sidekick])
     message.submit(process_message, [
                    sidekick, message, success_criteria, chatbot], [chatbot, sidekick])
@@ -51,7 +52,7 @@ with gr.Blocks(theme=gr.themes.Default(primary_hue="emerald")) as ui:
                             sidekick, message, success_criteria, chatbot], [chatbot, sidekick])
     go_button.click(process_message, [
         sidekick, message, success_criteria, chatbot], [chatbot, sidekick])
-    reset_buttn.click(reset, [], [
+    reset_button.click(reset, [], [
         sidekick, message, success_criteria, chatbot])
 
 
