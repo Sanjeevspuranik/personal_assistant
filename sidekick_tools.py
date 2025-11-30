@@ -92,6 +92,6 @@ async def other_tools():
         description="Useful for when you need to look up information about people, places, or things. Input should be a search query."
     )
 
-    python_repl_tool = PythonREPLTool()
+    python_repl_tool = PythonREPLTool
 
     return file_tools + [push_tool, tool_search, wiki_tool, python_repl_tool]
