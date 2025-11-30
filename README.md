@@ -68,14 +68,18 @@ Contributions are welcome!
 
 ### **Execution Summary View**
 
-![Push notification](sample_run\push_notification.jpg)
+<img src="sample_run/push_notification.jpg" alt="Push notification" width="400"/>
 
 ### **Generated Markdown Output Example**
 
-![Results](sample_run/day_out_bengaluru.md)
+[Results](sample_run/day_out_bengaluru.md)
 
 ---
 
 ## 🎥 Sample Run (Video)
 
-![Live run](sample_run\Live_run.mp4)
+[Live run](sample_run/Live_run.mp4)
+
+## 🧑‍💻 Author
+
+Built by [Sanjeev Spuranik](https://github.com/Sanjeevspuranik) — passionate about modular AI systems, semantic search, and educational tooling.
