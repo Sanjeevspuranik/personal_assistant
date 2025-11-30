@@ -24,6 +24,12 @@ git clone <repository-url>
 cd personal_assistant
 pip install -r requirements.txt
 ```
+### Run
+
+```bash
+cd personal_assistant
+uv run app.py
+```
 
 ## Contributing
 
